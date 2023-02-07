@@ -1,20 +1,33 @@
 module.exports = {
+    trailingSlash: true,
     async headers() {
-      return [
-        {
-          source: '/',
-          headers: [
+        return [
             {
-              key: 'x-custom-header',
-              value: 'my custom header value',
+              source: '/(.*)',
+              headers: [
+                {
+                  key: 'Content-Security-Policy',
+                  value:
+                    "default-src 'self'; font-src 'self' 'https://fonts.googleapis.com'; img-src 'self' *.somewhere.com; script-src 'self'",
+                },
+                {
+                  key: 'X-Frame-Options',
+                  value: 'DENY',
+                },
+                {
+                  key: 'X-Content-Type-Options',
+                  value: 'nosniff',
+                },
+                {
+                  key: 'Referrer-Policy',
+                  value: 'origin-when-cross-origin',
+                },
+                {
+                  key: 'Permissions-Policy',
+                  value: "camera=(); battery=(self); geolocation=(); microphone=('https://somewhere.com')",
+                },
+              ],
             },
-            {
-              key: 'x-another-custom-header',
-              value: 'my other custom header value',
-            },
-          ],
-        },
-      ]
-    },
-  };
-  
+          ];
+      },
+};
